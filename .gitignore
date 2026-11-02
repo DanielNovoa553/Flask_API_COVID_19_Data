@@ -1,0 +1,9 @@
+dbConnection.py
+*.db
+*.sqlite3
+__pycache__/
+*.pyc
+.env
+venv/
+.idea/
+.DS_Store
