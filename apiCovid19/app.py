@@ -3,10 +3,13 @@ import requests
 import datetime
 import jwt
 from dbConnection import connectdb
+import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv(usecwd=False))
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'GHgsfvxhwdcXFty"#&/()=)'
-
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 def generate_token():
     """ function to generate access token
@@ -40,7 +43,7 @@ def verify_token(token):
         return {'error': 'Token InvalidoO.'}
 
 
-@app.route('/login', methods=['GET'], strict_slashes=False, endpoint='login', defaults={'token': None})
+@app.route('/login', methods=['GET'], strict_slashes=False, endpoint='login')
 def login():
     """ function to log in and generate token
     Returns: token and expiration time in Mexico City if credentials are valid or error message if not valid
@@ -62,7 +65,7 @@ def login():
             return jsonify({'error': 'Usuario o contraseña incorrectos.'})
         else:
             try:
-                sql = f"SELECT * FROM usuarios WHERE email = '{username}' AND password = '{password}'"
+                sql = f"SELECT * FROM usuario WHERE username = '{username}' AND password = '{password}'"
                 cursor.execute(sql)
                 result = cursor.fetchone()
                 if result:
